@@ -30,28 +30,50 @@ const cards = [
 let cardsInPlay = [];
 
 function checkForMatch() {
+// display the image for teh face of that card in place
+// of the back of the cqrd
 //condtion
-if (cardsInPlay.length === 2){
+
 	if (cardsInPlay[0] === cardsInPlay[1]) {
-		console.log ("You found a match");
+		alert ("You found a match");
 	}
 	else {
 		alert ("Sorry Try again");
 		}
-	}
+	
 }
 
-function flipCard(cardId) {
+function flipCard() {
+	let cardId = this.getAttribute('data-id');
 	// inform the user of card flipped
 	console.log("User flipped: " +cards[cardId].rank);
 	// add the flipped card to the array
 	cardsInPlay.push(cards[cardId].rank);
 	console.log(cards[cardId].cardImage);
 	console.log(cards[cardId].suit);
-
-
-	checkForMatch();
+	this.setAttribute('src', cards[cardId].cardImage);
+	// if 2 cards have been clicked, now check for a match
+	if (cardsInPlay.length === 2){
+		checkForMatch();
+	}
 }
 
-flipCard(0);
-flipCard(2);
+function createBoard(){
+	// lets add each card to teh board
+	for (let i =0; i < cards.length; i++) {
+		// for each card, create an IMG element and store in cardElement
+		let cardElement = document.createElement('img');
+		// set the attribute to src so the user will see the back of the card
+		cardElement.setAttribute('src', 'images/back.png');
+		// set the cards data-id to the current index of the card. We can now tradck which card it is
+		cardElement.setAttribute('data-id', i);
+		// add an event to listen when a user clicks on teh card
+		cardElement.addEventListener('click', flipCard);
+		// append teh card element to the game-board
+		document.getElementById('game-board').appendChild(cardElement);
+	}
+}
+
+//run the function to create the board
+createBoard();
+
